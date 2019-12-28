@@ -16,23 +16,24 @@ bot.on('ready', async () =>{
     bot.user.setGame("Accepting Requests")
     let prefix = botconfig.prefix;
     console.log
-})
+});
+
+global.prefix = botconfig.prefx;
+
 bot.on("message", async message => {
 
     if(message.author.bot) return; //so it don't loop itself
-    let prefix = botconfig.prefx;
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
-    if(cmd === `${prefix}dog`){
-        return message.channel.send("dog")}
+    if(cmd === `${prefix}dog`)
+        return message.channel.send("dog");
 
     if(cmd === `${prefix}mute`){
-
         let muted = message.mentions.members.first();
         
         if(!muted)  return message.reply("Who?");
-        let muterole = message.guild.roles.find(`name`, "muted");
+        let muterole = message.guild.roles.find(r => r.name.toLowerCase() === "muted");
        
         if(!muterole){
             try {
@@ -48,8 +49,6 @@ bot.on("message", async message => {
             }catch(e){
                 console.log(e.stack);
             }
-
-
         }
         let mutetime = 5;
         console.log(muted);
@@ -60,12 +59,8 @@ bot.on("message", async message => {
     
         }, ms(mutetime));
     }
-    
-
-
-        
-
-
+    if(cmd === `${prefix}reverse`)
+        return message.channel.send(message.content.split("").reverse().join("").replace(/@/gm, "@\u200B"));
 })
 
 bot.login(token);
